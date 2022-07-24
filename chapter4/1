@@ -1,0 +1,70 @@
+void rwz68(){
+TCanvas *C1=new TCanvas("rwz68","Error's bar",200,10,700,800);
+ //C1->SetFillColor(42);
+   
+   // C1->SetGrid();
+   C1->SetTickx();
+   C1->SetTicky();
+
+Double_t x[]={0.108,0.110,0.112,0.114,0.116,0.118,0.120,0.122,0.124};
+Double_t y[]={0,0,0,0,0,9.79,0,0,0};
+Double_t axl[]={0,0,0,0,0,0.001,0,0,0};
+Double_t axh[]={0,0,0,0,0,0.001,0,0,0};
+Double_t ayl[]={0,0,0,0,0,0.096,0,0,0};
+Double_t ayh[]={0,0,0,0,0,0.096,0,0,0};
+Double_t a1yl[]={0,0,0,0,0,0.143,0,0,0};
+Double_t a1yh[]={0,0,0,0,0,0.119,0,0,0};
+//Double_t a2yl[]={0,0,0,0,0,0.2100,0,0,0};
+//Double_t a2yh[]={0,0,0,0,0,0.1991,0,0,0};
+
+
+
+TGraphAsymmErrors  *gr = new TGraphAsymmErrors(10, x, y, axl, axh, ayl, ayh);
+TGraphAsymmErrors  *gr1 = new TGraphAsymmErrors(10, x, y, 0, 0, a1yl, a1yh);
+//TGraphAsymmErrors  *gr2 = new TGraphAsymmErrors(10, x, y, 0, 0, a2yl, a2yh);
+
+
+gr->GetXaxis()->SetRangeUser(0.108,0.124);
+gr->GetYaxis()->SetRangeUser(9,10);
+gr1->GetXaxis()->SetRangeUser(0.108,0.124);
+gr1->GetYaxis()->SetRangeUser(9,10);
+//gr2->GetXaxis()->SetRangeUser(0.108,0.124);
+//gr2->GetYaxis()->SetRangeUser(8,10);
+
+gr1->GetXaxis()->SetTitle("#alpha_{s}(M_{z}^{2})");
+gr1->GetYaxis()->SetTitle("R_WZ#equiv#sigma_{W}/#sigma_{Z}");
+gr1->SetTitle("NNLO W/Z ratio at the LHC(#sqrt{s}=13TeV)");
+//gr->SetFillStyle(3001);
+//gr1->SetFillColor(2);
+gr->SetMarkerStyle(kOpenCircle);
+gr->SetMarkerColor(kRed);
+//gr2->SetLineColor(kRed);
+//gr2->SetLineWidth(1);
+gr->SetLineWidth(2);
+gr->SetLineColor(kRed);
+gr1->SetLineColor(kRed);
+gr1->Draw("a2");
+gr->Draw("a2");
+//gr2->Draw("a2");
+gr->Draw("p");
+gr1->Draw("p");
+//gr2->Draw("p");
+TLegend *leg=new TLegend(0.8,0.1,0.9,0.4);
+leg->SetHeader("68% C.L PDF","c");
+
+
+TLegendEntry *le = leg->AddEntry(gr,"NNPDF3.1","lep");
+le->SetMarkerStyle(kOpenCircle);
+le->SetTextSize(0.02);
+leg->Draw();
+ TPaveText *t=new TPaveText(.1,.1,.2,.3,"NDC");
+ t->SetTextSize(0.02);
+ t->AddText("Vertical error bars");
+ t->AddText("Inner:PDF only");
+ //t->AddText("Middle:#alpha_{s} only");
+ t->AddText("Outer:PDF+#alpha_{s}");
+ t->Draw();
+
+
+}
+
